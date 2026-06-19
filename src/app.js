@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
     'http://localhost:5173',
-    'http://127.0.0.1:5173'
+    'https://contact-integration-frontend.vercel.app'
 ];
 
 app.use(cors({

@@ -3,7 +3,6 @@ dotenv.config();
 
 export const environment = process.env.NODE_ENV;
 export const port = process.env.PORT;
-export const timezone = process.env.TIMEZONE || 'Asia/Kolkata';
 
 export const db = {
   port: process.env.DB_PORT || '',
@@ -18,5 +17,3 @@ export const google = {
   client_secret: process.env.GOOGLE_CLIENT_SECRET,
   redirect_uri: process.env.GOOGLE_REDIRECT_URI
 }
-
-export const corsUrl = process.env.CORS_URL;
