@@ -4,6 +4,7 @@ import { db } from './base.js';
 
 const pool = mysql.createPool({
     host: db.host,
+    port: db.port,
     user: db.user,
     password: db.password,
     database: db.name,
