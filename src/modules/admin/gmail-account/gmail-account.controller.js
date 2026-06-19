@@ -19,19 +19,20 @@ const googleLogin = async (req, res) => {
 };
 
 const googleLoginCallback = async (req, res) => {
-
-    const result =
-        await gmailAccountService.handleGoogleCallback(
-            req.query.code
-        );
-
-    return res.status(200).json(
-        new ApiResponse(
-            200,
-            result,
-            "Gmail account added successfully"
-        )
-    );
+    try {
+        await gmailAccountService.handleGoogleCallback(req.query.code);
+        const frontendUrl = environment === 'development'
+            ? 'http://localhost:5173'
+            : 'https://contact-integration-frontend.vercel.app';
+        return res.redirect(`${frontendUrl}/?auth=success`);
+    } catch (error) {
+        console.error(error);
+        const frontendUrl = environment === 'development'
+            ? 'http://localhost:5173'
+            : 'https://contact-integration-frontend.vercel.app';
+        const errorMsg = encodeURIComponent(error.message || 'Failed to add Gmail account');
+        return res.redirect(`${frontendUrl}/?auth=error&message=${errorMsg}`);
+    }
 };
 
 const getAllAccounts = async (req, res) => {
