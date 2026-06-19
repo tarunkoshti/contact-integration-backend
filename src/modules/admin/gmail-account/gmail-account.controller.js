@@ -1,3 +1,4 @@
+import { environment } from "../../../config/base.js";
 import oauth2Client from "../../../config/google.js";
 import { ApiResponse } from "../../../core/utils/ApiResponse.js";
 import { gmailAccountService } from "./gmail-account.service.js";
