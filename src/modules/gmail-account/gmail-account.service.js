@@ -1,11 +1,11 @@
 import { google } from "googleapis";
-import oauth2Client from "../../../config/google.js";
-import { google as googleConfig } from "../../../config/base.js";
+import oauth2Client from "../../config/google.js";
+import { google as googleConfig } from "../../config/base.js";
 import { gmailAccountRepository } from "./gmail-account.repository.js";
-import { ApiError } from "../../../core/utils/ApiError.js";
-import pool from "../../../config/db.js";
+import { ApiError } from "../../core/utils/ApiError.js";
+import pool from "../../config/db.js";
 
-const handleGoogleCallback = async (code) => {
+const handleGoogleCallback = async ({ code, projectId }) => {
 
     const { tokens } = await oauth2Client.getToken(code);
 
@@ -31,12 +31,13 @@ const handleGoogleCallback = async (code) => {
     }
 
     const totalPrimary =
-        await gmailAccountRepository.getPrimaryCount();
+        await gmailAccountRepository.getPrimaryCountByProject(projectId);
 
     const primaryStatus =
         totalPrimary === 0 ? 1 : 0;
 
     await gmailAccountRepository.createAccount({
+        project_id: projectId,
         gmail_id: data.email,
         access_token: tokens.access_token,
         refresh_token: tokens.refresh_token,
@@ -71,7 +72,7 @@ const makePrimaryAccount = async (id) => {
     try {
 
         await connection.beginTransaction();
-        await gmailAccountRepository.removePrimaryAccount(connection);
+        await gmailAccountRepository.removePrimaryAccountByProject(connection, account.project_id);
         await gmailAccountRepository.setPrimaryAccount(connection, id);
         await connection.commit();
 
@@ -89,18 +90,23 @@ const makePrimaryAccount = async (id) => {
     return null;
 };
 
-const getPrimaryAccount = async () => {
-    return await gmailAccountRepository.getPrimaryAccount();
+const getPrimaryAccountByProjectForUpdate = async (connection, projectId) => {
+    return await gmailAccountRepository.getPrimaryAccountByProjectForUpdate(connection, projectId);
 };
 
 const updateAccessToken = async (id, accessToken) => {
     await gmailAccountRepository.updateAccessToken(id, accessToken);
 };
 
+const updateLastSavedNumber = async (connection, gmailAccountId, lastSavedNumber) => {
+    await gmailAccountRepository.updateLastSavedNumber(connection, gmailAccountId, lastSavedNumber);
+};
+
 export const gmailAccountService = {
     handleGoogleCallback,
     getAllAccounts,
     makePrimaryAccount,
-    getPrimaryAccount,
-    updateAccessToken
+    getPrimaryAccountByProjectForUpdate,
+    updateAccessToken,
+    updateLastSavedNumber
 };

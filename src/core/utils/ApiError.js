@@ -12,7 +12,7 @@ class ApiError extends Error {
 
     toJSON() {
         return {
-            status: 'error',
+            status: false,
             statusCode: this.statusCode,
             message: this.message,
             errorCode: this.errorCode

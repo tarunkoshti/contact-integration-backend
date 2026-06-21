@@ -2,7 +2,7 @@ import cors from 'cors';
 import express from 'express';
 import { errorHandler } from './core/middlewares/errorHandler.js';
 import logger from './core/utils/logger.js';
-import { adminRoutes, clientRoutes } from './core/routes/index.js';
+import apiRoutes from './core/routes/index.js';
 import pool from './config/db.js';
 
 // Verify database connection
@@ -45,8 +45,7 @@ app.use(cors({
 }));
 
 // Routes
-app.use('/api/admin', adminRoutes);
-app.use('/api/client', clientRoutes);
+app.use('/api', apiRoutes);
 app.get('/', (req, res) => res.send('ok'));
 
 // catch 404 and forward to error handler

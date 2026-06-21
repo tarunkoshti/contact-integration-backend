@@ -1,13 +1,16 @@
-import { environment } from "../../../config/base.js";
-import oauth2Client from "../../../config/google.js";
-import { ApiResponse } from "../../../core/utils/ApiResponse.js";
+import { environment } from "../../config/base.js";
+import oauth2Client from "../../config/google.js";
+import { ApiResponse } from "../../core/utils/ApiResponse.js";
 import { gmailAccountService } from "./gmail-account.service.js";
 
 const googleLogin = async (req, res) => {
 
+    const { projectId } = req.query;
+
     const url = oauth2Client.generateAuthUrl({
         access_type: "offline",
         prompt: "consent",
+        state: projectId,
         scope: [
             "openid",
             "email",
@@ -21,7 +24,11 @@ const googleLogin = async (req, res) => {
 
 const googleLoginCallback = async (req, res) => {
     try {
-        await gmailAccountService.handleGoogleCallback(req.query.code);
+        await gmailAccountService.handleGoogleCallback({
+            code: req.query.code,
+            projectId: req.query.state
+        });
+        console.log("environment", environment, environment === 'development');
         const frontendUrl = environment === 'development'
             ? 'http://localhost:5173'
             : 'https://contact-integration-frontend.vercel.app';

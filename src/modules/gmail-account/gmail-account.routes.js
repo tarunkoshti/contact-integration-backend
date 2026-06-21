@@ -1,5 +1,5 @@
 import express from 'express';
-import asyncHandler from '../../../core/utils/asyncHandler.js';
+import asyncHandler from '../../core/utils/asyncHandler.js';
 import { gmailAccountController } from './gmail-account.controller.js';
 
 const router = express.Router();
