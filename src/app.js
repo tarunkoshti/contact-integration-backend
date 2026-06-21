@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import { errorHandler } from './core/middlewares/errorHandler.js';
 import logger from './core/utils/logger.js';
 import apiRoutes from './core/routes/index.js';
@@ -25,6 +26,7 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
