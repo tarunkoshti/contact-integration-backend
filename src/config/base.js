@@ -3,6 +3,7 @@ dotenv.config();
 
 export const environment = process.env.NODE_ENV;
 export const port = process.env.PORT;
+export const frontendUrl = process.env.FRONTEND_URL;
 
 export const db = {
   port: process.env.DB_PORT || '',

@@ -4,6 +4,7 @@ import { errorHandler } from './core/middlewares/errorHandler.js';
 import logger from './core/utils/logger.js';
 import apiRoutes from './core/routes/index.js';
 import pool from './config/db.js';
+import { frontendUrl } from './config/base.js';
 
 // Verify database connection
 const connectDb = async () => {
@@ -27,8 +28,7 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const allowedOrigins = [
-    'http://localhost:5173',
-    'https://contact-integration-frontend.vercel.app'
+    frontendUrl
 ];
 
 app.use(cors({

@@ -1,4 +1,4 @@
-import { environment } from "../../config/base.js";
+import { environment, frontendUrl } from "../../config/base.js";
 import oauth2Client from "../../config/google.js";
 import { ApiResponse } from "../../core/utils/ApiResponse.js";
 import { gmailAccountService } from "./gmail-account.service.js";
@@ -29,15 +29,9 @@ const googleLoginCallback = async (req, res) => {
             projectId: req.query.state
         });
         console.log("environment", environment, environment === 'development');
-        const frontendUrl = environment === 'development'
-            ? 'http://localhost:5173'
-            : 'https://contact-integration-frontend.vercel.app';
         return res.redirect(`${frontendUrl}/?auth=success`);
     } catch (error) {
         console.error(error);
-        const frontendUrl = environment === 'development'
-            ? 'http://localhost:5173'
-            : 'https://contact-integration-frontend.vercel.app';
         const errorMsg = encodeURIComponent(error.message || 'Failed to add Gmail account');
         return res.redirect(`${frontendUrl}/?auth=error&message=${errorMsg}`);
     }
