@@ -4,6 +4,6 @@ import { contactController } from './contact.controller.js';
 
 const router = express.Router();
 
-router.post('/', asyncHandler(contactController.createContact));
+router.post('/save-contact', asyncHandler(contactController.createContact));
 
 export default router;
