@@ -20,6 +20,7 @@ const connectDb = async () => {
 connectDb();
 
 const app = express();
+app.set('trust proxy', 1);
 
 app.use((req, res, next) => {
     logger.info(`${req.method} ${req.originalUrl} from ${req.ip} (Origin: ${req.get('origin')})`);
